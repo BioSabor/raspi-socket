@@ -1,3 +1,4 @@
+#version V0.0.1
 #crear un cliente socket
 import socket
 import json
