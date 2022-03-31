@@ -96,10 +96,10 @@ class client_api:
 
 
     def jsonConvert(self, data): #Falta revisar esto!!!!!
-        data = data.replace("(", "").replace(")", "").replace('Return(result="success" dev_id="6718119080000516" total="5897"', '')
-        data = data.split('\n')
-        data = [i.split("=") for i in data]
-        data = {i[0]:i[1] for i in data}
+        # data = data.replace("(", "").replace(")", "").replace('Return(result="success" dev_id="6718119080000516" total="5897"', '')
+        # data = data.split('\n')
+        # data = [i.split("=") for i in data]
+        # data = {i[0]:i[1] for i in data}
         return data
 
 
