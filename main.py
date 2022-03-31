@@ -8,5 +8,3 @@ if __name__ == '__main__':
     #print(request)
     api.sendDataAPI(api.jsonConvert(request)) # Enviamos los datos a la API
     print("Terminado")
-    
-#Prueba2
