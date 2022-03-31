@@ -1,9 +1,13 @@
 
 {
+    "version": "1.0.0",
     "host" : "5.154.54.24",
     "port": 9922,
     "filePath": "datos.txt",
+    "filePathRequest": "request.txt",
     "url_api": "URL",
     "get_info": "GetDeviceInfo()",
-    "set_time":"SetDeviceInfo(time=\"*\" week=\"#\")"
+    "set_time":"SetDeviceInfo(time=\"*\" week=\"#\")",
+    "get_record": "GetRecord(start_time=\"2000-01-01 00:00:00\" end_time=\"2050-12-31 23:59:59\")",
+    "cod_finca": 1
 }
