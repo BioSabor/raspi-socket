@@ -16,8 +16,7 @@ def envio(mensaje):
 
     #conectar al servidor
     cliente.connect(('5.154.54.24', 9922))
-
-
+    
     #enviar mensaje
     cliente.send(mensaje.encode('utf-8'))
     #recibir respuesta
@@ -48,7 +47,9 @@ def clearFile():
     with open('datos.txt', 'w') as file:
         file.write("")
 
-
+def loadConfig():
+    with open('config.json', 'r') as file:
+        return json.load(file)
 
 if __name__ == '__main__':
     clearFile()
