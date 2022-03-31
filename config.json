@@ -1,3 +1,9 @@
-IP_FACIAL: 5.154.54.24
-PORT: 9922
-URL_API: 
+
+{
+    "host" : "5.154.54.24",
+    "port": 9922,
+    "filePath": "datos.txt",
+    "url_api": "URL",
+    "get_info": "GetDeviceInfo()",
+    "set_time":"SetDeviceInfo(time=\"*\" week=\"#\")"
+}
