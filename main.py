@@ -6,10 +6,10 @@ import numpy as np
 if __name__ == '__main__':
     con = socket_connection() # Inicializamos la conexión socket
     api = client_api() # Inicializamos el cliente API
-<<<<<<< HEAD
 
     # Traer datos
     request = con.getRecord(True) # Obtenemos los registros
+    
 
     # Comprobar si hay datos o no
     if request == "":
@@ -55,10 +55,3 @@ if __name__ == '__main__':
     # # con.writeData(request, "./data.txt")
     # #api.sendDataAPI(api.jsonConvert(request)) # Enviamos los datos a la API
     # print("Terminado")
-=======
-    request = con.getRecord() # Obtenemos los registros
-    #print(request)
-    api.sendDataAPI(api.jsonConvert(request)) # Enviamos los datos a la API
-    print("Terminado")
-    
->>>>>>> 585408f13baa5b4e17770764481a1c682e6a5a10
