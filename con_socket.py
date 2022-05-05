@@ -27,7 +27,8 @@ class socket_connection:
         
         
 
-    def send(self, mensaje): #Envia el mensaje al servidor
+    def send(self, mensaje):
+        #Envia el mensaje al servidor
         self.clearFile() #Limpia el archivo antes de consultar los nuevos datos
         self.cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.cliente.connect((self.host, self.port))
@@ -88,7 +89,7 @@ class socket_connection:
 
         registros = []
 
-        for reg in range(1,5):
+        for reg in range(1,len(data)):
             pos = data[reg][31:].find(' ')
 
             fech = data[reg][6:16]
@@ -101,6 +102,7 @@ class socket_connection:
         for index, row in df_reg.iterrows():
             buffer = row['fecha'] + ";" + row['hora'] + ";" + row['id'] + "\n"
             self.writeBuffer(buffer)
+
             if logs:
                 self.saveLogs(buffer)
 
@@ -154,13 +156,29 @@ class client_api:
         self.url_api = self.config['url_api']
         self.version = self.config['version']
         self.cod_finca = self.config['cod_finca']
+        self.filePathBuffer = self.config['filepathBuffer']
+        self.columnsBuffer = self.config['columns_buffer']
 
 
-    def sendDataAPI(self ):
-        #Leer fichero buffer
+    def sendDataAPI(self):
+ 
+        data, ndata = self.processData()
+        
+        if ndata>0:
+            print('El JSON ES: ', data)
+                
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            r = requests.post(self.url_api + str(self.cod_finca), data='data', headers=headers)
+            return r.text, r.status_code
+        else:
+            print("No hay datos para enviar")
+            return None
 
+    def processData(self): # Proceso los datos recibidos 
+        df = pd.read_csv(self.filePathBuffer, sep=';', names=self.columnsBuffer)
+        
+        return df.to_json(orient='records'), df.shape[0]
+        
 
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(self.url_api + str(self.cod_finca), data='a', headers=headers)
-        return r.text, r.status_code
+         
 

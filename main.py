@@ -8,25 +8,44 @@ if __name__ == '__main__':
     api = client_api() # Inicializamos el cliente API
 
     # Traer datos
-    request = con.getRecord(True) # Obtenemos los registros
+    try:
+        request = con.getRecord(True) # Obtenemos los registros
+        
+        
+        # Comprobar si hay datos o no
+        if request == "":
+            print("No hay datos")
+        else:
+            print("Hay datos")
+            # Procesamos los datos recibidos
+            df = con.processData(request, True) # Procesamos los datos recibidos
+            #Vaciar de datos el facial
+            
+            
+            #Intentamos enviar datos a la API
+            if con.checkBuffer:
+                try:
+                    resp, status = api.sendDataAPI()
+                    if status==200:
+                        con.clearBuffer()
+                    else:                      
+                        print('No se han procesado los datos en la api')
+                        # Agragar error a log de errores
+
+                except Exception as e:
+                    print("Error al enviar datos a la API")
+                    print(e)
+                    # Agragar error a log de errores
+                #Envia datos a la API
+    except Exception as e:
+        print('No se ha podido conectar con el facial')
+        print(e)
+        # Agragar error a log de errores
+        
+        
+        
     
 
-    # Comprobar si hay datos o no
-    if request == "":
-        print("No hay datos")
-    else:
-        print("Hay datos")
-        # Procesamos los datos recibidos
-        df = con.processData(request, True) # Procesamos los datos recibidos
-
-        #Intentamos enviar datos a la API
-        if con.checkBuffer:
-            try:
-                resp, status = api.sendDataAPI()
-            except Exception as e:
-                print("Error al enviar datos a la API")
-                print(e)
-            #Envia datos a la API
 
 
 
@@ -37,7 +56,6 @@ if __name__ == '__main__':
         #Intentamos despues
 
 
-    print(df)
     # Si hay datos, guardarlos en local
 
 
