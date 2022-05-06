@@ -4,3 +4,4 @@ request.txt
 *.txt
 config.json
 *.txt
+buffer/buffer.txt
