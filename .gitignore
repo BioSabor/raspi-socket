@@ -4,4 +4,4 @@ logs/request.txt
 buffer/buffer.txt
 logs/logs_fails.txt
 logs/logs.txt
-config.json
+private.json

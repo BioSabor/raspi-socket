@@ -8,15 +8,23 @@ import requests
 def loadConfig(): #Carga la configuracion
         with open('config.json', 'r') as file:
             jsonFile = json.load(file)
-        return jsonFile
+            
+        with open('private.json', 'r') as file:
+            privateJson = json.load(file)
+            
+        
+        return jsonFile, privateJson
+    
+
 
 class socket_connection:
 
     def __init__(self):
-        self.config = loadConfig()
+        self.config, self.configPrivate = loadConfig()
 
-        self.host = self.config['host']
-        self.port = self.config['port']
+        self.host = self.configPrivate['host']
+        self.port = self.configPrivate['port']
+        self.apiVersion = self.config['api_version']
         self.filePath = self.config['filePath']
         self.filePathRequest = self.config['filePathRequest']
         self.command_getinfo = self.config['get_info']
@@ -179,14 +187,17 @@ class socket_connection:
 class client_api:
 
     def __init__(self):
-        self.config = loadConfig()
+        self.config, self.configPrivate = loadConfig()
 
-        self.url_api = self.config['url_api']
+        self.url_api = self.configPrivate['url_api']
         self.version = self.config['version']
-        self.cod_finca = self.config['cod_finca']
+        self.cod_finca = self.configPrivate['cod_finca']
         self.filePathBuffer = self.config['filepathBuffer']
         self.columnsBuffer = self.config['columns_buffer']
-
+        self.apiVersion = self.config['api_version']
+      
+        #Incluimos la versión de la API en la URL
+        self.url_api = self.url_api.replace('*', self.apiVersion)
 
     def sendDataAPI(self):
  
@@ -196,6 +207,7 @@ class client_api:
             #print('El JSON ES: ', data)
                 
             headers = {'Content-type': 'application/json'}
+            #Concatenamos el codigo de finca en la URL API
             r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
             return r.text, r.status_code
         else:

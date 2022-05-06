@@ -18,7 +18,9 @@ if __name__ == '__main__':
         else:
             print("Hay datos")
             # Procesamos los datos recibidos
-            df = con.processData(request, True) # Procesamos los datos recibidos          
+            df = con.processData(request, True) # Procesamos los datos recibidos
+            #Vaciar de datos el facial
+            
             
             #Intentamos enviar datos a la API
             if con.checkBuffer:
@@ -26,6 +28,12 @@ if __name__ == '__main__':
                     resp, status = api.sendDataAPI()
                     if status==200:
                         con.clearBuffer()
+                        
+                        if resp == 1:
+                            con.setTime()
+                        elif resp == 2:
+                            con.initAdmin()
+
                     else:                      
                         print('No se han procesado los datos en la api')
                         # Agragar error a log de errores
@@ -38,4 +46,3 @@ if __name__ == '__main__':
     except Exception as e:
         print('No se ha podido conectar con el facial')
         print(e)
-        # Agragar error a log de errores
