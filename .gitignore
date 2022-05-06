@@ -1,5 +1,7 @@
 __pycache__/con_socket.cpython-37.pyc
 datos.txt
 request.txt
-config.json
 buffer/buffer.txt
+buffer/buffer.txt
+logs/logs_fails.txt
+logs/logs.txt

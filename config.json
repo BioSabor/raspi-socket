@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "host" : "",
     "port": 9922,
-    "filePath": "datos.txt",
-    "filePathRequest": "request.txt",
+    "filePath": "logs/datos.txt",
+    "filePathRequest": "logs/request.txt",
     "filepathLogs": "logs/logs.txt",
     "filepathBuffer": "buffer/buffer.txt",
     "url_api": "",
@@ -14,7 +14,6 @@
     "set_time":"SetDeviceInfo(time=\"*\" week=\"#\")",
     "del_allTicaje":"DeleteAllRecord()",
     "reset_admin":"InitDeviceAdmin()",
-
     "get_record": "GetRecord(start_time=\"2000-01-01 00:00:00\" end_time=\"2050-12-31 23:59:59\")",
     "cod_finca": 1
 }
