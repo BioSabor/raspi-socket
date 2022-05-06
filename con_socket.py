@@ -24,10 +24,11 @@ class socket_connection:
         self.command_getrecord = self.config['get_record']
         self.filepathLogs = self.config['filepathLogs']
         self.filepathBuffer = self.config['filepathBuffer']
-        
+        self.command_deleteReg = self.config['del_allTicaje']
+        self.command_initAdmin = self.config['reset_admin']
         
 
-    def send(self, mensaje):
+    def send(self, mensaje, write=False):
         #Envia el mensaje al servidor
         self.clearFile() #Limpia el archivo antes de consultar los nuevos datos
         self.cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,11 +44,38 @@ class socket_connection:
                 break
             
         self.cliente.close()
-
-        self.writeData(self.response, self.filePathRequest)
+        if write:
+            self.writeData(self.response, self.filePathRequest)
 
         return self.response
 
+    def deleteAllRecord(self):
+        self.cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.cliente.connect((self.host, self.port))
+        self.cliente.send(self.command_deleteReg.encode('utf-8'))
+        
+        
+    def initAdmin(self):
+        self.cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.cliente.connect((self.host, self.port))
+        self.cliente.send(self.command_initAdmin.encode('utf-8'))
+        
+        
+    def setTime(self):
+        comando = self.command_settime   
+        time = ""
+        week = ""
+        
+        comando = comando.replace("*", time)
+        comando = comando.replace("#", week)
+        
+        
+        
+        self.cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.cliente.connect((self.host, self.port))
+        self.cliente.send(comando.encode('utf-8'))
+        
+    
 
     def getRecord(self, writeData=False): #Envia petición de registros
         if writeData:
@@ -165,10 +193,10 @@ class client_api:
         data, ndata = self.processData()
         
         if ndata>0:
-            print('El JSON ES: ', data)
+            #print('El JSON ES: ', data)
                 
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-            r = requests.post(self.url_api + str(self.cod_finca), data='data', headers=headers)
+            headers = {'Content-type': 'application/json'}
+            r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
             return r.text, r.status_code
         else:
             print("No hay datos para enviar")
