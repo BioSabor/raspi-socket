@@ -46,3 +46,4 @@ if __name__ == '__main__':
     except Exception as e:
         print('No se ha podido conectar con el facial')
         print(e)
+        
