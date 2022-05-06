@@ -1,6 +1,6 @@
 {
-    "host": "",
-    "port": 0,
-    "url_api": "",
-    "cod_finca": 0
+    "host": "192.168.1.195",
+    "port": 9922,
+    "url_api": "http://app.biosabor.com:8088/*/ticaje/",
+    "cod_finca": 1
 }
