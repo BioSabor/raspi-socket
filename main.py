@@ -28,6 +28,7 @@ if __name__ == '__main__':
                     resp, status = api.sendDataAPI()
                     if status==200:
                         con.clearBuffer()
+                        con.deleteAllRecord()
                         
                         if resp == 1:
                             con.setTime()
