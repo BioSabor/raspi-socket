@@ -1,7 +1,7 @@
 
 {
     "version": "1.0.0",
-    "api_version": "v1",
+    "api_version": "v1hola",
     "filePath": "logs/datos.txt",
     "filePathRequest": "logs/request.txt",
     "filepathLogs": "logs/logs.txt",
