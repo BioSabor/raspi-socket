@@ -1,7 +1,8 @@
-__pycache__/con_socket.cpython-37.pyc
+__pycache__/*
 logs/datos.txt
 logs/request.txt
 buffer/buffer.txt
 logs/logs_fails.txt
 logs/logs.txt
 private.json
+*.txt
