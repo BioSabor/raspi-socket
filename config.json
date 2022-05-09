@@ -5,6 +5,7 @@
     "filePath": "/home/pi/PRG/raspi-socket/logs/datos.txt",
     "filePathRequest": "/home/pi/PRG/raspi-socket/logs/request.txt",
     "filepathLogs": "/home/pi/PRG/raspi-socket/logs/logs.txt",
+    "filepathErrorLogs": "/home/pi/PRG/raspi-socket/logs/logs_fails.txt",
     "filepathBuffer": "/home/pi/PRG/raspi-socket/buffer/buffer.txt",
     "columns_buffer": ["fecha", "hora", "id"],
     "get_info": "GetDeviceInfo()",

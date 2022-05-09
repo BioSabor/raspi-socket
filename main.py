@@ -10,8 +10,7 @@ if __name__ == '__main__':
     # Traer datos
     try:
         request = con.getRecord(True) # Obtenemos los registros
-        
-        
+
         # Comprobar si hay datos o no
         if request == "" or 'total="0"' in request:
             print("No hay datos")
@@ -38,15 +37,18 @@ if __name__ == '__main__':
 
                     else:                      
                         print('No se han procesado los datos en la api')
+                        con.registerError('No se han procesado los datos en la api (Posible error en la ruta de la API)')
                         # Agragar error a log de errores
 
                 except Exception as e:
                     print("Error al enviar datos a la API")
                     print(e)
+                    con.registerError("ERROR EN COMUNICACIÓN API:" + e)
                     # Agragar error a log de errores
                 #Envia datos a la API
     except Exception as e:
         print('No se ha podido conectar con el facial')
         print(e)
+        con.registerError("ERROR EN COMUNICACIÓN FACIAL:" + e)
 
         

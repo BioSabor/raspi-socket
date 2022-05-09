@@ -1,6 +1,7 @@
 import datetime
 import socket
 import json
+from datetime import datetime
 import pandas as pd
 import numpy as np
 import requests
@@ -34,6 +35,7 @@ class socket_connection:
         self.filepathBuffer = self.config['filepathBuffer']
         self.command_deleteReg = self.config['del_allTicaje']
         self.command_initAdmin = self.config['reset_admin']
+        self.filepathErrors = self.config['filepathErrorLogs']
         
 
     def send(self, mensaje, write=False):
@@ -170,6 +172,9 @@ class socket_connection:
         with open(self.filepathBuffer, 'w') as file:
             file.write("")
 
+    def registerError(self, data):
+        with open(self.filepathErrors, 'a') as file:
+            file.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -> " + data+"\n")
 
     def updateTime(self): #Actualiza la hora
         self.comand = self.command_settime
