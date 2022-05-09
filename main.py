@@ -43,12 +43,12 @@ if __name__ == '__main__':
                 except Exception as e:
                     print("Error al enviar datos a la API")
                     print(e)
-                    con.registerError("ERROR EN COMUNICACIÓN API:" + e)
+                    con.registerError(e)
                     # Agragar error a log de errores
                 #Envia datos a la API
     except Exception as e:
         print('No se ha podido conectar con el facial')
         print(e)
-        con.registerError("ERROR EN COMUNICACIÓN FACIAL:" + e)
+        con.registerError(e)
 
         
