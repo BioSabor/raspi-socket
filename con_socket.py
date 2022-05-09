@@ -72,6 +72,7 @@ class socket_connection:
         
         
     def setTime(self):
+        print("RESETEANDO TIEMPO")
         comando = self.command_settime   
         time = ""
         week = ""
@@ -174,7 +175,7 @@ class socket_connection:
 
     def registerError(self, data):
         with open(self.filepathErrors, 'a') as file:
-            file.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -> " + data+"\n")
+            file.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -> " + data +"\n")
 
     def updateTime(self): #Actualiza la hora
         self.comand = self.command_settime
@@ -218,6 +219,16 @@ class client_api:
         else:
             print("No hay datos para enviar")
             return None
+    
+    def dataPing(self):
+        headers = {'Content-type': 'application/json'}
+        data = {
+            "version": self.version,   
+        }
+        data = json.dumps(data)
+            #Concatenamos el codigo de finca en la URL API
+        r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
+        return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
         df = pd.read_csv(self.filePathBuffer, sep=';', names=self.columnsBuffer)

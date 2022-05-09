@@ -14,6 +14,9 @@ if __name__ == '__main__':
         # Comprobar si hay datos o no
         if request == "" or 'total="0"' in request:
             print("No hay datos")
+             # Mandamos ping a la API
+            resp, status = api.dataPing()
+            print(resp)
         else:
             print("Hay datos")
             # Procesamos los datos recibidos
@@ -25,6 +28,7 @@ if __name__ == '__main__':
             if con.checkBuffer:
                 try:
                     resp, status = api.sendDataAPI()
+                    print(resp)
                     if status==200:
                         print('Enviado correctamente')
                         con.clearBuffer()
@@ -43,12 +47,12 @@ if __name__ == '__main__':
                 except Exception as e:
                     print("Error al enviar datos a la API")
                     print(e)
-                    con.registerError(e)
+                    con.registerError(str(e))
                     # Agragar error a log de errores
                 #Envia datos a la API
     except Exception as e:
         print('No se ha podido conectar con el facial')
         print(e)
-        con.registerError(e)
+        con.registerError(str(e))
 
         
