@@ -13,7 +13,7 @@ if __name__ == '__main__':
         
         
         # Comprobar si hay datos o no
-        if request == "":
+        if request == "" or 'total="0"' in request:
             print("No hay datos")
         else:
             print("Hay datos")
@@ -27,6 +27,7 @@ if __name__ == '__main__':
                 try:
                     resp, status = api.sendDataAPI()
                     if status==200:
+                        print('Enviado correctamente')
                         con.clearBuffer()
                         con.deleteAllRecord()
                         
