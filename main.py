@@ -30,9 +30,9 @@ if __name__ == '__main__':
                         con.clearBuffer()
                         con.deleteAllRecord()
                         
-                        if resp == 1:
+                        if resp == "1":
                             con.setTime()
-                        elif resp == 2:
+                        elif resp == "2":
                             con.initAdmin()
 
                     else:                      
