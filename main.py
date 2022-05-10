@@ -19,12 +19,12 @@ if __name__ == '__main__':
             resp, status = api.dataPing()
             sentences = json.loads(resp)
             
-           
-            for sentence in sentences['data']:
-                if sentence.get('Sentence') == "1":
-                    con.setTime()
-                elif sentence.get('Sentence') == "2":
-                    con.initAdmin()
+            if sentences['data'] != None:
+                for sentence in sentences['data']:
+                    if sentence.get('Sentence') == "1":
+                        con.setTime()
+                    elif sentence.get('Sentence') == "2":
+                        con.initAdmin()
 
 
         else:
@@ -38,16 +38,18 @@ if __name__ == '__main__':
             if con.checkBuffer:
                 try:
                     resp, status = api.sendDataAPI()
-                    print(resp)
                     if status==200:
                         print('Enviado correctamente')
                         con.clearBuffer()
                         con.deleteAllRecord()
                         
-                        if resp == "1":
-                            con.setTime()
-                        elif resp == "2":
-                            con.initAdmin()
+                        sentences = json.loads(resp)
+                        if sentences['data'] != None:
+                            for sentence in sentences['data']:
+                                if sentence.get('Sentence') == "1":
+                                    con.setTime()
+                                elif sentence.get('Sentence') == "2":
+                                    con.initAdmin()
 
                     else:                      
                         print('No se han procesado los datos en la api')
