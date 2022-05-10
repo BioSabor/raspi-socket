@@ -10,7 +10,7 @@ def loadConfig(): #Carga la configuracion
         with open('config.json', 'r') as file:
             jsonFile = json.load(file)
             
-        with open('private.json', 'r') as file:
+        with open('/boot/private.json', 'r') as file:
             privateJson = json.load(file)
             
         
