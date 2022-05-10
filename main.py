@@ -1,3 +1,4 @@
+import json
 from con_socket import socket_connection
 from con_socket import client_api 
 import pandas as pd
@@ -16,7 +17,16 @@ if __name__ == '__main__':
             print("No hay datos")
              # Mandamos ping a la API
             resp, status = api.dataPing()
-            print(resp)
+            sentences = json.loads(resp)
+            
+           
+            for sentence in sentences['data']:
+                if sentence.get('Sentence') == "1":
+                    con.setTime()
+                elif sentence.get('Sentence') == "2":
+                    con.initAdmin()
+
+
         else:
             print("Hay datos")
             # Procesamos los datos recibidos

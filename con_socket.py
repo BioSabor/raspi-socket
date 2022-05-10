@@ -72,15 +72,14 @@ class socket_connection:
         
         
     def setTime(self):
-        print("RESETEANDO TIEMPO")
         comando = self.command_settime   
-        time = ""
-        week = ""
+        time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        week = datetime.today().isoweekday()
         
         comando = comando.replace("*", time)
-        comando = comando.replace("#", week)
+        comando = comando.replace("#", str(week))
         
-        
+        print(comando)
         
         self.cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.cliente.connect((self.host, self.port))
