@@ -4,10 +4,26 @@ from con_socket import client_api
 import pandas as pd
 import numpy as np
 
+def checkSentences(resp):
+    sentences = json.loads(resp)
+    if sentences['data'] != None:
+        for sentence in sentences['data']:
+            if sentence.get('Sentence') == "1":
+                con.setTime()
+            elif sentence.get('Sentence') == "2":
+                con.initAdmin()
+            elif sentence.get('Sentence') == "GetErroresAll()":
+                api.typeSendData="error"
+                api.sendDataAPI(True)
+            elif sentence.get('Sentence') == "GetLogsAll()":
+                api.typeSendData="data"
+                api.sendDataAPI(True)
+            else:
+                print(sentence.get('Sentence'))
+
 if __name__ == '__main__':
     con = socket_connection() # Inicializamos la conexión socket
     api = client_api() # Inicializamos el cliente API
-
     # Traer datos
     try:
         request = con.getRecord(True) # Obtenemos los registros
@@ -17,15 +33,7 @@ if __name__ == '__main__':
             print("No hay datos")
              # Mandamos ping a la API
             resp, status = api.dataPing()
-            sentences = json.loads(resp)
-            
-            if sentences['data'] != None:
-                for sentence in sentences['data']:
-                    if sentence.get('Sentence') == "1":
-                        con.setTime()
-                    elif sentence.get('Sentence') == "2":
-                        con.initAdmin()
-
+            checkSentences(resp)
 
         else:
             print("Hay datos")
@@ -42,15 +50,7 @@ if __name__ == '__main__':
                         print('Enviado correctamente')
                         con.clearBuffer()
                         con.deleteAllRecord()
-                        
-                        sentences = json.loads(resp)
-                        if sentences['data'] != None:
-                            for sentence in sentences['data']:
-                                if sentence.get('Sentence') == "1":
-                                    con.setTime()
-                                elif sentence.get('Sentence') == "2":
-                                    con.initAdmin()
-
+                        checkSentences(resp)
                     else:                      
                         print('No se han procesado los datos en la api')
                         con.registerError('No se han procesado los datos en la api (Posible error en la ruta de la API)')
@@ -66,5 +66,3 @@ if __name__ == '__main__':
         print('No se ha podido conectar con el facial')
         print(e)
         con.registerError(str(e))
-
-        

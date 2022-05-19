@@ -9,10 +9,12 @@ import requests
 def loadConfig(): #Carga la configuracion
         with open('config.json', 'r') as file:
             jsonFile = json.load(file)
-            
-        with open('/boot/private.json', 'r') as file:
-            privateJson = json.load(file)
-            
+        try:    
+            with open('/boot/private.json', 'r') as file:
+                privateJson = json.load(file)
+        except:
+            with open('private.json', 'r') as file:
+                privateJson = json.load(file)
         
         return jsonFile, privateJson
     
@@ -200,24 +202,37 @@ class client_api:
         self.filePathBuffer = self.config['filepathBuffer']
         self.columnsBuffer = self.config['columns_buffer']
         self.apiVersion = self.config['api_version']
+        self.filepathErrors = self.config['filepathErrorLogs']
+        self.filepathLogs = self.config['filepathLogs']
+        self.typeSendData = "data"
       
         #Incluimos la versión de la API en la URL
         self.url_api = self.url_api.replace('*', self.apiVersion)
 
-    def sendDataAPI(self):
- 
-        data, ndata = self.processData()
-        
-        if ndata>0:
-            #print('El JSON ES: ', data)
-                
-            headers = {'Content-type': 'application/json'}
-            #Concatenamos el codigo de finca en la URL API
-            r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
-            return r.text, r.status_code
+    def sendDataAPI(self, isSentence=False):
+        if isSentence:
+            headers = {'Content-type': 'text/plain'}
+            data = 'Por motivos extraños no se ha podido procesar la solicitud'
+            if self.typeSendData == "data":
+                with open(self.filepathLogs, 'r') as file:
+                    data = file.read()
+            else: 
+                with open(self.filepathErrors, 'r') as file:
+                    data = file.read()
+            r = requests.post('http://app.biosabor.com:8088/v1/ticaje/'+ str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
         else:
-            print("No hay datos para enviar")
-            return None
+            data, ndata = self.processData()
+            
+            if ndata>0:
+                #print('El JSON ES: ', data)
+                    
+                headers = {'Content-type': 'application/json'}
+                #Concatenamos el codigo de finca en la URL API
+                r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
+                return r.text, r.status_code
+            else:
+                print("No hay datos para enviar")
+                return None
     
     def dataPing(self):
         headers = {'Content-type': 'application/json'}
