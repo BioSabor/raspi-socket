@@ -169,6 +169,7 @@ class socket_connection:
     def writeBuffer(self, data):
         with open(self.filepathBuffer, 'a') as file:
             file.write(data)
+        self.deleteAllRecord()
 
     def clearBuffer(self):
         with open(self.filepathBuffer, 'w') as file:
