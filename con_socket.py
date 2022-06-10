@@ -3,6 +3,7 @@ import socket
 import json
 from datetime import datetime
 import pandas as pd
+import os
 import numpy as np
 import requests
 
@@ -243,6 +244,10 @@ class client_api:
         data = json.dumps(data)
             #Concatenamos el codigo de finca en la URL API
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
+
+        temp =  os.system("cat /sys/class/thermal/thermal_zone0/temp")
+        print(temp)
+
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
