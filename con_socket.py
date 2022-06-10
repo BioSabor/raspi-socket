@@ -249,7 +249,7 @@ class client_api:
             #Concatenamos el codigo de finca en la URL API
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
-        print('temperatura:',(self.checkTemp()/1000))
+        print('temperatura:',(int(self.checkTemp())/1000))
 
         return r.text, r.status_code
 
