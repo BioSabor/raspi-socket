@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 import subprocess
 import numpy as np
+from sys import platform
 import requests
 
 def loadConfig(): #Carga la configuracion
@@ -250,7 +251,7 @@ class client_api:
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
         print('temperatura:',(int(self.checkTemp())/1000))
-
+        print(platform)
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
