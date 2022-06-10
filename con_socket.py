@@ -238,7 +238,7 @@ class client_api:
     def checkTemp(self):
         with open('/sys/class/thermal/thermal_zone0/temp', 'r') as file:
             data = file.read()
-            return data
+        return data
 
     def dataPing(self):
         headers = {'Content-type': 'application/json'}
