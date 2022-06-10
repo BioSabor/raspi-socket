@@ -3,7 +3,7 @@ import socket
 import json
 from datetime import datetime
 import pandas as pd
-import os
+import subprocess
 import numpy as np
 import requests
 
@@ -245,7 +245,7 @@ class client_api:
             #Concatenamos el codigo de finca en la URL API
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
-        print('temperatura:', (int(os.system("cat /sys/class/thermal/thermal_zone0/temp"))/1000))
+        print('temperatura:',subprocess.run("cat /sys/class/thermal/thermal_zone0/temp"))
 
         return r.text, r.status_code
 
