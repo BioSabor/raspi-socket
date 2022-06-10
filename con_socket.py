@@ -245,7 +245,9 @@ class client_api:
             #Concatenamos el codigo de finca en la URL API
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
-        print('temperatura:',subprocess.run("cat /sys/class/thermal/thermal_zone0/temp"))
+        temo = subprocess.run(["cat /sys/class/thermal/thermal_zone0/temp"],stdout=subprocess.PIPE, text=True)
+
+        print('temperatura:',temo.stdout)
 
         return r.text, r.status_code
 
