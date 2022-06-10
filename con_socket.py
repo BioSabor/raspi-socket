@@ -247,7 +247,7 @@ class client_api:
 
         temo = subprocess.Popen(["cat", "/sys/class/thermal/thermal_zone0/temp"],stdout=subprocess.PIPE, shell=True)
 
-        print('temperatura:',temo.stdout)
+        print('temperatura:',temo)
 
         return r.text, r.status_code
 
