@@ -1,3 +1,4 @@
 cd C:\PRG\raspi-socket
-cmd /k "git pull origin main"
-cmd /k "python ./main.py"
+git pull origin main
+python ./main.py
+cmd /k "exit"
