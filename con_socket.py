@@ -251,7 +251,7 @@ class client_api:
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
         if platform == 'linux':
-            requests.get('http://192.168.1.156:8888/v1/fincas/'+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
+            requests.get('http://app.biosabor.com:8088/v1/fincas/'+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
