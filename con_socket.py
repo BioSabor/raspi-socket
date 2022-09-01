@@ -6,6 +6,7 @@ import pandas as pd
 import subprocess
 import numpy as np
 from sys import platform
+from regex import F
 import requests
 
 def loadConfig(): #Carga la configuracion
@@ -200,6 +201,7 @@ class client_api:
         self.config, self.configPrivate = loadConfig()
 
         self.url_api = self.configPrivate['url_api']
+        self.url_api_fincas = self.configPrivate['ur_api_finca']
         self.version = self.config['version']
         self.cod_finca = self.configPrivate['cod_finca']
         self.filePathBuffer = self.config['filepathBuffer']
@@ -211,6 +213,7 @@ class client_api:
       
         #Incluimos la versión de la API en la URL
         self.url_api = self.url_api.replace('*', self.apiVersion)
+        self.url_api_fincas = self.url_api_fincas.replace('*', self.apiVersion)
 
     def sendDataAPI(self, isSentence=False):
         if isSentence:
@@ -222,7 +225,7 @@ class client_api:
             else: 
                 with open(self.filepathErrors, 'r') as file:
                     data = file.read()
-            r = requests.post(self.url_api+ str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
+            r = requests.post(self.url_api + str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
         else:
             data, ndata = self.processData()
             
@@ -254,7 +257,7 @@ class client_api:
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
         if platform == 'linux':
-            requests.get(self.url_api+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
+            requests.get(self.url_api_fincas+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
