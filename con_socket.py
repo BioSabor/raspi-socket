@@ -222,7 +222,7 @@ class client_api:
             else: 
                 with open(self.filepathErrors, 'r') as file:
                     data = file.read()
-            r = requests.post('http://app.biosabor.com:8088/v1/ticaje/'+ str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
+            r = requests.post(self.url_api+ str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
         else:
             data, ndata = self.processData()
             
@@ -237,9 +237,12 @@ class client_api:
                 print("No hay datos para enviar")
                 return None
     def checkTemp(self):
-        with open('/sys/class/thermal/thermal_zone0/temp', 'r') as file:
-            data = file.read()
-        return data
+        try:
+            with open('/sys/class/thermal/thermal_zone0/temp', 'r') as file:
+                data = file.read()
+            return data
+        except:
+            return "0"
 
     def dataPing(self):
         headers = {'Content-type': 'application/json'}
@@ -251,7 +254,7 @@ class client_api:
         r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
 
         if platform == 'linux':
-            requests.get('http://app.biosabor.com:8088/v1/fincas/'+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
+            requests.get(self.url_api+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
