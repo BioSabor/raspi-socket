@@ -1,0 +1,6 @@
+{
+    "host": "ip-facial",
+    "port": puertoFacial,
+    "url_api": "URL API",
+    "cod_finca": codigo_finca
+}
