@@ -201,7 +201,7 @@ class client_api:
         self.config, self.configPrivate = loadConfig()
 
         self.url_api = self.configPrivate['url_api']
-        self.url_api_fincas = self.configPrivate['ur_api_finca']
+        self.url_api_fincas = self.configPrivate['url_api_finca']
         self.version = self.config['version']
         self.cod_finca = self.configPrivate['cod_finca']
         self.filePathBuffer = self.config['filepathBuffer']
