@@ -72,3 +72,4 @@ if __name__ == '__main__':
         print('No se ha podido conectar con el facial')
         print(e)
         con.registerError(str(e))
+        resp, status = api.dataPing()
