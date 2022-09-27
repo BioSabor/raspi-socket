@@ -161,7 +161,7 @@ class socket_connection:
             else:
                 return True
         except Exception as e:
-            self.clearFile(self.filepathBuffer)
+            self.writeData("", self.filepathBuffer)
             return False
 
     def clearFile(self, path): #Limpia el archivo
