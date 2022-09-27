@@ -1,4 +1,4 @@
 cd C:\PRG\raspi-socket
 git pull origin main
-python ./main.py
+py ./main.py
 cmd /k "exit"
