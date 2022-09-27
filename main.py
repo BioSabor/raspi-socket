@@ -21,6 +21,29 @@ def checkSentences(resp):
             else:
                 print(sentence.get('Sentence'))
 
+
+def enviaBuffer():
+     #Intentamos enviar datos a la API
+    if con.checkBuffer:
+        try:
+            resp, status = api.sendDataAPI()
+            if status==200:
+                print('Enviado correctamente')
+                con.clearBuffer()
+                con.deleteAllRecord()
+                checkSentences(resp)
+            else:                      
+                print('No se han procesado los datos en la api')
+                con.registerError('No se han procesado los datos en la api (Posible error en la ruta de la API)')
+                # Agragar error a log de errores
+
+        except Exception as e:
+            print("Error al enviar datos a la API")
+            print(e)
+            con.registerError(str(e))
+            # Agragar error a log de errores
+
+
 if __name__ == '__main__':
     con = socket_connection() # Inicializamos la conexión socket
     api = client_api() # Inicializamos el cliente API
@@ -32,6 +55,7 @@ if __name__ == '__main__':
         if request == "" or 'total="0"' in request:
             print("No hay datos")
              # Mandamos ping a la API
+            enviaBuffer()
             resp, status = api.dataPing()
             checkSentences(resp)
 
@@ -40,29 +64,12 @@ if __name__ == '__main__':
             # Procesamos los datos recibidos
             df = con.processData(request, True) # Procesamos los datos recibidos
             #Vaciar de datos el facial
+            enviaBuffer()
             
-            
-            #Intentamos enviar datos a la API
-            if con.checkBuffer:
-                try:
-                    resp, status = api.sendDataAPI()
-                    if status==200:
-                        print('Enviado correctamente')
-                        con.clearBuffer()
-                        con.deleteAllRecord()
-                        checkSentences(resp)
-                    else:                      
-                        print('No se han procesado los datos en la api')
-                        con.registerError('No se han procesado los datos en la api (Posible error en la ruta de la API)')
-                        # Agragar error a log de errores
-
-                except Exception as e:
-                    print("Error al enviar datos a la API")
-                    print(e)
-                    con.registerError(str(e))
-                    # Agragar error a log de errores
+           
                 #Envia datos a la API
     except Exception as e:
         print('No se ha podido conectar con el facial')
         print(e)
         con.registerError(str(e))
+        resp, status = api.dataPing()
