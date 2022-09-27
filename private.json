@@ -1,7 +1,6 @@
 {
-    "host": "ip-facial",
-    "port": puertoFacial,
-    "url_api": "URL API",
-    "url_api_finca": "URL API",
-    "cod_finca": codigo_finca
+    "host": "5.154.54.24",
+    "port": 9922,
+    "url_api": "http://app.biosabor.com:8088/v1/ticaje/",
+    "cod_finca": 12
 }
