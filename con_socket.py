@@ -153,12 +153,16 @@ class socket_connection:
             
 
     def checkBuffer(self):
-        with open(self.filepathBuffer, 'r') as file:
-            data = file.read()
-        if data == "":
+        try:
+            with open(self.filepathBuffer, 'r') as file:
+                data = file.read()
+            if data == "":
+                return False
+            else:
+                return True
+        except Exception as e:
+            self.clearFile(self.filepathBuffer)
             return False
-        else:
-            return True
 
     def clearFile(self, path): #Limpia el archivo
         with open(path, 'w') as file:
