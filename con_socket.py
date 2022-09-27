@@ -265,6 +265,8 @@ class client_api:
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
+        with open(self.filePathBuffer, 'a+') as file:
+            file.write("")
         df = pd.read_csv(self.filePathBuffer, sep=';', names=self.columnsBuffer)
         
         return df.to_json(orient='records'), df.shape[0]
