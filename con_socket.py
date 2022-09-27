@@ -41,6 +41,9 @@ class socket_connection:
         self.command_deleteReg = self.config['del_allTicaje']
         self.command_initAdmin = self.config['reset_admin']
         self.filepathErrors = self.config['filepathErrorLogs']
+
+        
+                
         
 
     def send(self, mensaje, write=False):
@@ -161,7 +164,6 @@ class socket_connection:
             else:
                 return True
         except Exception as e:
-            self.clearFile(self.filepathBuffer)
             return False
 
     def clearFile(self, path): #Limpia el archivo
@@ -265,8 +267,10 @@ class client_api:
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
-        df = pd.read_csv(self.filePathBuffer, sep=';', names=self.columnsBuffer)
-        
+        with open(self.filePathBuffer, 'a+') as file:
+            file.write("")
+
+        df = pd.read_csv(self.filePathBuffer, sep=';', names=self.columnsBuffer)       
         return df.to_json(orient='records'), df.shape[0]
         
 

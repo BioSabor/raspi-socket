@@ -26,8 +26,11 @@ def enviaBuffer():
      #Intentamos enviar datos a la API
     if con.checkBuffer:
         try:
+            print(1)
             resp, status = api.sendDataAPI()
+            print(2)
             if status==200:
+                print(3)
                 print('Enviado correctamente')
                 con.clearBuffer()
                 con.deleteAllRecord()
@@ -45,6 +48,7 @@ def enviaBuffer():
 
 
 if __name__ == '__main__':
+    
     con = socket_connection() # Inicializamos la conexión socket
     api = client_api() # Inicializamos el cliente API
     # Traer datos
