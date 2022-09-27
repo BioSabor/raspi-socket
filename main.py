@@ -40,7 +40,7 @@ def enviaBuffer():
         except Exception as e:
             print("Error al enviar datos a la API")
             print(e)
-            con.registerError(str(e))
+            #con.registerError(str(e))
             # Agragar error a log de errores
 
 
