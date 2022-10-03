@@ -18,6 +18,9 @@ def checkSentences(resp):
             elif sentence.get('Sentence') == "GetLogsAll()":
                 api.typeSendData="data"
                 api.sendDataAPI(True)
+            elif sentence.get('Sentence')[0:7] == "GetPass":
+                #Llamar a funcion que vuelque los datos en un rango de fechas
+                pass
             else:
                 print(sentence.get('Sentence'))
 
