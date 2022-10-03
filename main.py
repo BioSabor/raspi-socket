@@ -43,7 +43,7 @@ def enviaBuffer():
         except Exception as e:
             print("Error al enviar datos a la API")
             print(e)
-            con.registerError(str(e))
+            #con.registerError(str(e))
             # Agragar error a log de errores
 
 
@@ -75,3 +75,4 @@ if __name__ == '__main__':
         print('No se ha podido conectar con el facial')
         print(e)
         con.registerError(str(e))
+        resp, status = api.dataPing()

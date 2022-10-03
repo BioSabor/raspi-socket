@@ -153,12 +153,16 @@ class socket_connection:
             
 
     def checkBuffer(self):
-        with open(self.filepathBuffer, 'r') as file:
-            data = file.read()
-        if data == "":
+        try:
+            with open(self.filepathBuffer, 'r') as file:
+                data = file.read()
+            if data == "":
+                return False
+            else:
+                return True
+        except Exception as e:
+            self.writeData("", self.filepathBuffer)
             return False
-        else:
-            return True
 
     def clearFile(self, path): #Limpia el archivo
         with open(path, 'w') as file:
@@ -261,6 +265,8 @@ class client_api:
         return r.text, r.status_code
 
     def processData(self): # Proceso los datos recibidos 
+        with open(self.filePathBuffer, 'a+') as file:
+            file.write("")
         df = pd.read_csv(self.filePathBuffer, sep=';', names=self.columnsBuffer)
         
         return df.to_json(orient='records'), df.shape[0]
