@@ -1,4 +1,6 @@
 import datetime
+from operator import truediv
+from pickle import TRUE
 import socket
 import json
 from datetime import datetime
@@ -198,6 +200,28 @@ class socket_connection:
     def saveLogs(self, data):
         with open(self.filepathLogs, 'a') as file:
             file.write(data)
+
+
+    def copyLog_Buffer(self, fechaInicio, fechaFin):
+        try:
+            df = pd.read_csv(self.filepathLogs, sep=';', names=['fecha', 'hora', 'codigo'])
+            df = df.dropna()
+            mask = (df['fecha'] >= fechaInicio) & (df['fecha'] <= fechaFin)
+            df = df.loc[mask]
+            df['codigo'] = df['codigo'].astype('Int64')
+
+            with open(self.filepathBuffer) as file:
+                doc = file.read()
+                if doc != "" and doc[-1:] != '\n':
+                    with open('prueba.txt', 'a') as f:
+                        f.write('\n')
+            df.to_csv(self.filepathBuffer, index=0, sep=';',mode='a', header=False)
+            return True  
+        except Exception as e:
+            self.registerError(e)
+            return False
+
+        
 
 class client_api:
 

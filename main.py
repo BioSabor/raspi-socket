@@ -4,25 +4,28 @@ from con_socket import client_api
 import pandas as pd
 import numpy as np
 
-def checkSentences(resp):
+def checkSentences(resp):   
     sentences = json.loads(resp)
-    if sentences['data'] != None:
+    if sentences['data'] != None: 
         for sentence in sentences['data']:
-            if sentence.get('Sentence') == "1":
+            if sentence['Sentence'] == "1":
                 con.setTime()
-            elif sentence.get('Sentence') == "2":
+            elif sentence['Sentence'] == "2":
                 con.initAdmin()
-            elif sentence.get('Sentence') == "GetErroresAll()":
+            elif sentence['Sentence'] == "GetErroresAll()":
                 api.typeSendData="error"
                 api.sendDataAPI(True)
-            elif sentence.get('Sentence') == "GetLogsAll()":
+            elif sentence['Sentence'] == "GetLogsAll()":
                 api.typeSendData="data"
                 api.sendDataAPI(True)
-            elif sentence.get('Sentence')[0:7] == "GetPass":
-                #Llamar a funcion que vuelque los datos en un rango de fechas
-                pass
+            elif "GetPass" in sentence['Sentence']:
+                sentence = sentence['Sentence']
+                data = json.loads(sentence[sentence.find('{') : sentence.find('}')+1])        
+                ret = con.copyLog_Buffer(data['FechaInicio'], data['FechaFin'])
+                if ret:
+                    enviaBuffer()
             else:
-                print(sentence.get('Sentence'))
+                print(sentence['Sentence'])
 
 
 def enviaBuffer():
@@ -76,3 +79,4 @@ if __name__ == '__main__':
         print(e)
         con.registerError(str(e))
         resp, status = api.dataPing()
+        checkSentences(resp)
