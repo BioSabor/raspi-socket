@@ -14,10 +14,10 @@ def checkSentences(resp):
                 con.initAdmin()
             elif sentence['Sentence'] == "GetErroresAll()":
                 api.typeSendData="error"
-                api.sendDataAPI(True)
+                api.sendDataAPI(isSentence=True)
             elif sentence['Sentence'] == "GetLogsAll()":
                 api.typeSendData="data"
-                api.sendDataAPI(True)
+                api.sendDataAPI(isSentence=True)
             elif "GetPass" in sentence['Sentence']:
                 sentence = sentence['Sentence']
                 data = json.loads(sentence[sentence.find('{') : sentence.find('}')+1])        
@@ -28,16 +28,26 @@ def checkSentences(resp):
                 print(sentence['Sentence'])
 
 
-def enviaBuffer():
+def enviaBuffer(conexionFacial=False):
      #Intentamos enviar datos a la API
     if con.checkBuffer:
-        try:
-            resp, status = api.sendDataAPI()
+        try:     
+            statusFacial = 0
+            if conexionFacial:
+                statusFacial = 1
+
+            resp, status = api.sendDataAPI(status=statusFacial)
             if status==200:
                 print('Enviado correctamente')
                 con.clearBuffer()
-                con.deleteAllRecord()
+                
+                if conexionFacial:
+                    con.deleteAllRecord()
+
                 checkSentences(resp)
+
+            elif status==400:
+                print('No hay datos en el buffer')
             else:                      
                 print('No se han procesado los datos en la api')
                 con.registerError('No se han procesado los datos en la api (Posible error en la ruta de la API)')
@@ -53,30 +63,36 @@ def enviaBuffer():
 if __name__ == '__main__':
     con = socket_connection() # Inicializamos la conexión socket
     api = client_api() # Inicializamos el cliente API
-    # Traer datos
+
+    request = ""
+    conexionFacial = False
+    # Traer datos del facial
     try:
         request = con.getRecord(True) # Obtenemos los registros
-
-        # Comprobar si hay datos o no
-        if request == "" or 'total="0"' in request:
-            print("No hay datos")
-             # Mandamos ping a la API
-            enviaBuffer()
-            resp, status = api.dataPing()
-            checkSentences(resp)
-
-        else:
-            print("Hay datos")
-            # Procesamos los datos recibidos
-            df = con.processData(request, True) # Procesamos los datos recibidos
-            #Vaciar de datos el facial
-            enviaBuffer()
-            
-           
-                #Envia datos a la API
+        conexionFacial = True
     except Exception as e:
-        print('No se ha podido conectar con el facial')
+            print('No se ha podido conectar con el facial')
+            print(e)
+            con.registerError(str(e))
+            resp, status = api.dataPing(0)
+            checkSentences(resp)
+    try:
+
+        if conexionFacial:
+            # Comprobar si hay datos o no
+            if request == "" or 'total="0"' in request:
+                print("No hay datos")
+                resp, status = api.dataPing(1)
+                checkSentences(resp)
+            else:
+                print("Hay datos")
+                df = con.processData(request, True) # Procesamos los datos recibidos
+
+        enviaBuffer(conexionFacial)
+
+    except Exception as e:
+        print('Error al procesar o enviar datos a la API')
         print(e)
         con.registerError(str(e))
-        resp, status = api.dataPing()
+        resp, status = api.dataPing(0)
         checkSentences(resp)

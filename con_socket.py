@@ -130,22 +130,28 @@ class socket_connection:
                 data.append(line)
         file.close()
 
-        columns = ['fecha', 'hora', 'id']
+        columns = ['fecha', 'hora', 'id', 'name']
 
         registros = []
 
         for reg in range(1,len(data)):
-            pos = data[reg][31:].find(' ')
+            if data[reg].find("fail") == -1 and data[reg].find("name") != -1:
+                pos = data[reg][31:].find(' ')   
+                posname_ini = data[reg].find('name') + 6
+                posname_fin = posname_ini + data[reg][posname_ini:].find('"')
+                
+                fech = data[reg][6:16]
+                hor = data[reg][17:25]
+                iden = data[reg][31:30+pos]
+                name = data[reg][posname_ini:posname_fin]
 
-            fech = data[reg][6:16]
-            hor = data[reg][17:25]
-            iden = data[reg][31:30+pos]
-            registros.append([fech, hor, iden])
+                if len(fech) > 2:
+                    registros.append([fech, hor, iden, name])
 
         df_reg = pd.DataFrame(registros, columns=columns)
 
         for index, row in df_reg.iterrows():
-            buffer = row['fecha'] + ";" + row['hora'] + ";" + row['id'] + "\n"
+            buffer = row['fecha'] + ";" + row['hora'] + ";" + row['id'] + ";" + row['name'] + "\n"
             self.writeBuffer(buffer)
 
             if logs:
@@ -243,30 +249,30 @@ class client_api:
         self.url_api = self.url_api.replace('*', self.apiVersion)
         #self.url_api_fincas = self.url_api_fincas.replace('*', self.apiVersion)
 
-    def sendDataAPI(self, isSentence=False):
+    def sendDataAPI(self, status=1, isSentence=False):
         if isSentence:
-            headers = {'Content-type': 'text/plain'}
-            data = 'Por motivos extraños no se ha podido procesar la solicitud'
-            if self.typeSendData == "data":
-                with open(self.filepathLogs, 'r') as file:
-                    data = file.read()
-            else: 
-                with open(self.filepathErrors, 'r') as file:
-                    data = file.read()
-            r = requests.post(self.url_api + str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
+            pass
+            # headers = {'Content-type': 'text/plain'}
+            # data = 'Por motivos extraños no se ha podido procesar la solicitud'
+            # if self.typeSendData == "data":
+            #     with open(self.filepathLogs, 'r') as file:
+            #         data = file.read()
+            # else: 
+            #     with open(self.filepathErrors, 'r') as file:
+            #         data = file.read()
+            # r = requests.post(self.url_api + str(self.cod_finca) +'/'+ self.typeSendData, data=data, headers=headers)
         else:
             data, ndata = self.processData()
             
-            if ndata>0:
-                #print('El JSON ES: ', data)
-                    
+            if ndata>0:       
                 headers = {'Content-type': 'application/json'}
                 #Concatenamos el codigo de finca en la URL API
-                r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
+                r = requests.post(self.url_api + str(self.cod_finca) + "?status=" + str(status), data=data, headers=headers)
                 return r.text, r.status_code
             else:
                 print("No hay datos para enviar")
-                return None
+                return "", 400
+
     def checkTemp(self):
         try:
             with open('/sys/class/thermal/thermal_zone0/temp', 'r') as file:
@@ -275,18 +281,12 @@ class client_api:
         except:
             return "0"
 
-    def dataPing(self):
+    def dataPing(self, status):
         headers = {'Content-type': 'application/json'}
-        data = {
-            "version": self.version,   
-        }
-        data = json.dumps(data)
-            #Concatenamos el codigo de finca en la URL API
-        r = requests.post(self.url_api + str(self.cod_finca), data=data, headers=headers)
-
-        if platform == 'linux':
-            requests.get(self.url_api+ str(self.cod_finca) +'/temperatura/'+ str(int(self.checkTemp())/1000))
+        print(self.url_api + str(self.cod_finca) + "?status=" + str(status))
+        r = requests.post(self.url_api + str(self.cod_finca) + "?status=" + str(status), headers=headers)
         return r.text, r.status_code
+
 
     def processData(self): # Proceso los datos recibidos 
         with open(self.filePathBuffer, 'a+') as file:

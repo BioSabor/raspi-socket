@@ -7,7 +7,7 @@
     "filepathLogs": "logs/logs.txt",
     "filepathErrorLogs": "logs/logs_fails.txt",
     "filepathBuffer": "buffer/buffer.txt",
-    "columns_buffer": ["fecha", "hora", "id"],
+    "columns_buffer": ["fecha", "hora", "id", "name"],
     "get_info": "GetDeviceInfo()",
     "set_time":"SetDeviceInfo(time=\"*\" week=\"#\")",
     "del_allTicaje":"DeleteAllRecord()",
