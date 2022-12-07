@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import json
 from con_socket import socket_connection
 from con_socket import client_api 
