@@ -4,6 +4,7 @@ from con_socket import client_api
 import pandas as pd
 import numpy as np
 
+
 def checkSentences(resp):   
     sentences = json.loads(resp)
     if sentences['data'] != None: 
