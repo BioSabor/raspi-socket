@@ -81,3 +81,4 @@ if __name__ == '__main__':
         con.registerError(str(e))
         resp, status = api.dataPing()
         checkSentences(resp)
+
